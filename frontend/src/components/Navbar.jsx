@@ -1,44 +1,41 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { Link } from "react-router-dom";
 
-const Navbar = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
-  };
-
+function Navbar() {
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-2xl font-bold">Your apps name</Link>
+    <nav style={styles.nav}>
+      <Link to="/" style={styles.logo}>Ajantha Yoga</Link>
+
       <div>
-        {user ? (
-          <>
-            <Link to="/tasks" className="mr-4">CRUD</Link>
-            <Link to="/profile" className="mr-4">Profile</Link>
-            <button
-              onClick={handleLogout}
-              className="bg-red-500 px-4 py-2 rounded hover:bg-red-700"
-            >
-              Logout
-            </button>
-          </>
-        ) : (
-          <>
-            <Link to="/login" className="mr-4">Login</Link>
-            <Link
-              to="/register"
-              className="bg-green-500 px-4 py-2 rounded hover:bg-green-700"
-            >
-              Register
-            </Link>
-          </>
-        )}
+        <Link to="/sessions" style={styles.link}>Sessions</Link>
+        <Link to="/bookings" style={styles.link}>Bookings</Link>
+        <Link to="/profile" style={styles.link}>Profile</Link>
+        <Link to="/admin" style={styles.link}>Admin</Link>
       </div>
     </nav>
   );
+}
+
+const styles = {
+  nav: {
+    background: "#351c75",
+    color: "white",
+    padding: "14px 24px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  logo: {
+    color: "white",
+    fontWeight: "bold",
+    textDecoration: "none",
+    fontSize: "18px",
+  },
+  link: {
+    color: "white",
+    marginLeft: "15px",
+    textDecoration: "none",
+    fontSize: "14px",
+  },
 };
 
 export default Navbar;

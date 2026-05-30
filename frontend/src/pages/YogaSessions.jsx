@@ -1,0 +1,238 @@
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import axios from "../axiosConfig";
+
+function YogaSessions() {
+  const [sessions, setSessions] = useState([]);
+
+  useEffect(() => {
+    loadSessions();
+  }, []);
+
+  const loadSessions = async () => {
+    try {
+      const res = await axios.get("/api/yoga-sessions");
+      setSessions(res.data);
+    } catch (error) {
+      console.error(error);
+      alert("Failed to load yoga sessions");
+    }
+  };
+
+  const getImageEmoji = (image) => {
+    if (image === "session1.jpg") return "🧘‍♀️";
+    if (image === "session2.jpg") return "🌿";
+    if (image === "session3.jpg") return "🔥";
+    return "🧘";
+  };
+
+  return (
+    <div style={styles.page}>
+      <div style={styles.phone}>
+        <div style={styles.header}>
+          <div>
+            <p style={styles.smallText}>Welcome back</p>
+            <h1 style={styles.title}>Find Your Yoga Session</h1>
+          </div>
+          <div style={styles.avatar}>R</div>
+        </div>
+
+        <div style={styles.heroCard}>
+          <div>
+            <h2 style={styles.heroTitle}>Start your wellness journey</h2>
+            <p style={styles.heroText}>
+              Book calming, beginner-friendly, and power yoga classes.
+            </p>
+          </div>
+          <div style={styles.heroImage}>🧘‍♀️</div>
+        </div>
+
+        <h2 style={styles.sectionTitle}>Available Sessions</h2>
+
+        <div style={styles.sessionList}>
+          {sessions.map((session) => (
+            <div key={session._id} style={styles.sessionCard}>
+              <div style={styles.sessionImage}>
+                {getImageEmoji(session.image)}
+              </div>
+
+              <div style={styles.sessionInfo}>
+                <h3 style={styles.sessionTitle}>{session.title}</h3>
+                <p style={styles.sessionInstructor}>
+                  Instructor: {session.instructor}
+                </p>
+                <p style={styles.sessionMeta}>
+                  {new Date(session.date).toLocaleDateString()} •{" "}
+                  {session.startTime || "Time TBC"}
+                </p>
+                <p style={styles.sessionMeta}>
+                  Capacity: {session.capacity}
+                </p>
+
+                <Link
+                  to={`/session/${session._id}`}
+                  style={styles.viewButton}
+                >
+                  View Details
+                </Link>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div style={styles.bottomNav}>
+          <Link to="/sessions" style={styles.navItem}>Sessions</Link>
+          <Link to="/bookings" style={styles.navItem}>Bookings</Link>
+          <Link to="/profile" style={styles.navItem}>Profile</Link>
+          <Link to="/admin" style={styles.navItem}>Admin</Link>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: "linear-gradient(160deg, #d88ad7, #9b5de5, #5b36c5)",
+    display: "flex",
+    justifyContent: "center",
+    padding: "20px",
+  },
+  phone: {
+    width: "390px",
+    minHeight: "760px",
+    background: "#f8f5ff",
+    borderRadius: "32px",
+    padding: "22px",
+    boxShadow: "0 20px 45px rgba(0,0,0,0.25)",
+    position: "relative",
+    paddingBottom: "85px",
+  },
+  header: {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+  },
+  smallText: {
+    color: "#7c6f95",
+    margin: 0,
+  },
+  title: {
+    color: "#351c75",
+    fontSize: "26px",
+    margin: "5px 0 0",
+  },
+  avatar: {
+    width: "45px",
+    height: "45px",
+    borderRadius: "50%",
+    background: "#7ed957",
+    color: "#1f2937",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontWeight: "bold",
+  },
+  heroCard: {
+    background: "linear-gradient(135deg, #9b5de5, #d88ad7)",
+    borderRadius: "24px",
+    padding: "20px",
+    color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: "25px",
+  },
+  heroTitle: {
+    fontSize: "20px",
+    margin: "0 0 8px",
+  },
+  heroText: {
+    fontSize: "14px",
+    lineHeight: "1.5",
+    margin: 0,
+  },
+  heroImage: {
+    fontSize: "60px",
+    marginLeft: "10px",
+  },
+  sectionTitle: {
+    color: "#351c75",
+    fontSize: "22px",
+    marginBottom: "15px",
+  },
+  sessionList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "15px",
+  },
+  sessionCard: {
+    background: "white",
+    borderRadius: "22px",
+    padding: "14px",
+    display: "flex",
+    gap: "14px",
+    boxShadow: "0 8px 20px rgba(91,54,197,0.12)",
+  },
+  sessionImage: {
+    width: "82px",
+    height: "82px",
+    borderRadius: "20px",
+    background: "#f1e7ff",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "40px",
+  },
+  sessionInfo: {
+    flex: 1,
+  },
+  sessionTitle: {
+    margin: "0 0 5px",
+    color: "#351c75",
+    fontSize: "17px",
+  },
+  sessionInstructor: {
+    margin: "0 0 5px",
+    color: "#6b7280",
+    fontSize: "14px",
+  },
+  sessionMeta: {
+    margin: "0 0 5px",
+    color: "#7c6f95",
+    fontSize: "13px",
+  },
+  viewButton: {
+    display: "inline-block",
+    marginTop: "6px",
+    padding: "8px 14px",
+    background: "#7ed957",
+    color: "#1f2937",
+    borderRadius: "18px",
+    textDecoration: "none",
+    fontWeight: "bold",
+    fontSize: "13px",
+  },
+  bottomNav: {
+    position: "absolute",
+    left: "20px",
+    right: "20px",
+    bottom: "18px",
+    background: "white",
+    borderRadius: "24px",
+    padding: "14px 10px",
+    display: "flex",
+    justifyContent: "space-around",
+    boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
+  },
+  navItem: {
+    color: "#5b36c5",
+    fontSize: "13px",
+    textDecoration: "none",
+    fontWeight: "bold",
+  },
+};
+
+export default YogaSessions;
