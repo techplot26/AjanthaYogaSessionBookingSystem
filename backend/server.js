@@ -2,13 +2,15 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+
 const authRoutes = require('./routes/authRoutes');
+const yogaSessionRoutes = require('./routes/yogaSessionRoutes');
 
 dotenv.config();
 
 const app = express();
 
-// Connect MongoDB
+// Connect Database
 connectDB();
 
 // Middleware
@@ -17,18 +19,20 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/yoga-sessions', yogaSessionRoutes);
 
-// Home route
+// Home Route
 app.get('/', (req, res) => {
     res.send('Ajantha Yoga Backend API is running');
 });
 
-// Start server
+// Start Server
 if (require.main === module) {
     const PORT = process.env.PORT || 5001;
-    app.listen(PORT, () =>
-        console.log(`Server running on port ${PORT}`)
-    );
+
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
 }
 
 module.exports = app;
