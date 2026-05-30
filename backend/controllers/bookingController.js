@@ -41,7 +41,7 @@ exports.getBookings = async (req, res) => {
   try {
     const bookings = await Booking.find()
       .populate("user", "name email role")
-      .populate("session", "title instructor date duration capacity");
+      .populate("session", "title instructor image date startTime endTime location duration capacity description");
 
     res.json(bookings);
   } catch (error) {
