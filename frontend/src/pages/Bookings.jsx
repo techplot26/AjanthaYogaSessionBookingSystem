@@ -19,6 +19,13 @@ function Bookings() {
     loadBookings();
   };
 
+  const getImageEmoji = (image) => {
+    if (image === "session1.jpg") return "🧘‍♀️";
+    if (image === "session2.jpg") return "🌿";
+    if (image === "session3.jpg") return "🔥";
+    return "🧘";
+  };
+
   return (
     <div style={styles.page}>
       <div style={styles.phone}>
@@ -29,18 +36,29 @@ function Bookings() {
           <span style={styles.tab}>Past</span>
         </div>
 
+        {bookings.length === 0 && (
+          <p style={styles.emptyText}>No bookings found.</p>
+        )}
+
         {bookings.map((booking) => (
           <div key={booking._id} style={styles.card}>
-            <div style={styles.imageBox}>🧘‍♀️</div>
+            <div style={styles.imageBox}>
+              {getImageEmoji(booking.session?.image)}
+            </div>
 
             <div style={styles.info}>
               <h3 style={styles.sessionTitle}>{booking.session?.title}</h3>
-              <p style={styles.text}>Instructor: {booking.session?.instructor}</p>
+
               <p style={styles.text}>
-                {booking.session?.date
-                  ? new Date(booking.session.date).toLocaleDateString()
-                  : ""}
-                {" "}• {booking.session?.startTime}
+                Instructor: {booking.session?.instructor}
+              </p>
+
+              <p style={styles.text}>
+                Date: {booking.selectedDate || "Not selected"}
+              </p>
+
+              <p style={styles.text}>
+                Time: {booking.selectedTime || "Not selected"}
               </p>
 
               <span style={styles.status}>{booking.status}</span>
@@ -98,6 +116,12 @@ const styles = {
     borderRadius: "18px",
     color: "#6b7280",
   },
+  emptyText: {
+    color: "#6b7280",
+    background: "white",
+    padding: "15px",
+    borderRadius: "18px",
+  },
   card: {
     background: "white",
     borderRadius: "24px",
@@ -109,6 +133,7 @@ const styles = {
   },
   imageBox: {
     width: "82px",
+    minWidth: "82px",
     height: "82px",
     borderRadius: "20px",
     background: "#f1e7ff",
@@ -138,6 +163,7 @@ const styles = {
     fontSize: "12px",
     fontWeight: "bold",
     marginRight: "8px",
+    textTransform: "capitalize",
   },
   cancelButton: {
     border: "none",

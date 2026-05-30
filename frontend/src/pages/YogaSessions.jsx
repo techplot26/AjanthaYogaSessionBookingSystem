@@ -4,6 +4,7 @@ import axios from "../axiosConfig";
 
 function YogaSessions() {
   const [sessions, setSessions] = useState([]);
+  const [selectedOptions, setSelectedOptions] = useState({});
 
   useEffect(() => {
     loadSessions();
@@ -16,6 +17,45 @@ function YogaSessions() {
     } catch (error) {
       console.error(error);
       alert("Failed to load yoga sessions");
+    }
+  };
+
+  const handleOptionChange = (sessionId, field, value) => {
+    setSelectedOptions({
+      ...selectedOptions,
+      [sessionId]: {
+        ...selectedOptions[sessionId],
+        [field]: value,
+      },
+    });
+  };
+
+  const bookSession = async (sessionId) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const selectedDate = selectedOptions[sessionId]?.selectedDate;
+    const selectedTime = selectedOptions[sessionId]?.selectedTime;
+
+    if (!user) {
+      alert("Please login before booking");
+      return;
+    }
+
+    if (!selectedDate || !selectedTime) {
+      alert("Please select date and time before booking");
+      return;
+    }
+
+    try {
+      await axios.post("/api/bookings", {
+        userId: user.id,
+        sessionId,
+        selectedDate,
+        selectedTime,
+      });
+
+      alert("Session booked successfully");
+    } catch (error) {
+      alert(error.response?.data?.message || "Booking failed");
     }
   };
 
@@ -34,7 +74,6 @@ function YogaSessions() {
             <p style={styles.smallText}>Welcome back</p>
             <h1 style={styles.title}>Find Your Yoga Session</h1>
           </div>
-          <div style={styles.avatar}>R</div>
         </div>
 
         <div style={styles.heroCard}>
@@ -58,23 +97,58 @@ function YogaSessions() {
 
               <div style={styles.sessionInfo}>
                 <h3 style={styles.sessionTitle}>{session.title}</h3>
+
                 <p style={styles.sessionInstructor}>
                   Instructor: {session.instructor}
                 </p>
+
                 <p style={styles.sessionMeta}>
-                  {new Date(session.date).toLocaleDateString()} •{" "}
+                  Suggested: {new Date(session.date).toLocaleDateString()} •{" "}
                   {session.startTime || "Time TBC"}
                 </p>
-                <p style={styles.sessionMeta}>
-                  Capacity: {session.capacity}
-                </p>
 
-                <Link
-                  to={`/session/${session._id}`}
-                  style={styles.viewButton}
-                >
-                  View Details
-                </Link>
+                <div style={styles.pickerRow}>
+                  <input
+                    type="date"
+                    style={styles.dateInput}
+                    value={selectedOptions[session._id]?.selectedDate || ""}
+                    onChange={(e) =>
+                      handleOptionChange(
+                        session._id,
+                        "selectedDate",
+                        e.target.value
+                      )
+                    }
+                  />
+
+                  <input
+                    type="time"
+                    style={styles.timeInput}
+                    value={selectedOptions[session._id]?.selectedTime || ""}
+                    onChange={(e) =>
+                      handleOptionChange(
+                        session._id,
+                        "selectedTime",
+                        e.target.value
+                      )
+                    }
+                  />
+                </div>
+
+                <p style={styles.sessionMeta}>Capacity: {session.capacity}</p>
+
+                <div style={styles.buttonRow}>
+                  <button
+                    onClick={() => bookSession(session._id)}
+                    style={styles.bookButton}
+                  >
+                    Book
+                  </button>
+
+                  <Link to={`/session/${session._id}`} style={styles.viewButton}>
+                    Details
+                  </Link>
+                </div>
               </div>
             </div>
           ))}
@@ -110,9 +184,6 @@ const styles = {
     paddingBottom: "85px",
   },
   header: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
     marginBottom: "20px",
   },
   smallText: {
@@ -123,17 +194,6 @@ const styles = {
     color: "#351c75",
     fontSize: "26px",
     margin: "5px 0 0",
-  },
-  avatar: {
-    width: "45px",
-    height: "45px",
-    borderRadius: "50%",
-    background: "#7ed957",
-    color: "#1f2937",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontWeight: "bold",
   },
   heroCard: {
     background: "linear-gradient(135deg, #9b5de5, #d88ad7)",
@@ -178,6 +238,7 @@ const styles = {
   },
   sessionImage: {
     width: "82px",
+    minWidth: "82px",
     height: "82px",
     borderRadius: "20px",
     background: "#f1e7ff",
@@ -200,16 +261,49 @@ const styles = {
     fontSize: "14px",
   },
   sessionMeta: {
-    margin: "0 0 5px",
+    margin: "0 0 7px",
     color: "#7c6f95",
     fontSize: "13px",
   },
-  viewButton: {
-    display: "inline-block",
-    marginTop: "6px",
+  pickerRow: {
+    display: "flex",
+    gap: "8px",
+    margin: "8px 0",
+  },
+  dateInput: {
+    width: "52%",
+    padding: "7px",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    fontSize: "12px",
+  },
+  timeInput: {
+    width: "48%",
+    padding: "7px",
+    borderRadius: "12px",
+    border: "1px solid #ddd",
+    fontSize: "12px",
+  },
+  buttonRow: {
+    display: "flex",
+    gap: "8px",
+    marginTop: "8px",
+  },
+  bookButton: {
     padding: "8px 14px",
     background: "#7ed957",
     color: "#1f2937",
+    borderRadius: "18px",
+    border: "none",
+    fontWeight: "bold",
+    fontSize: "13px",
+    cursor: "pointer",
+  },
+  viewButton: {
+    display: "inline-block",
+    padding: "8px 14px",
+    background: "#f1e7ff",
+    color: "#5b36c5",
     borderRadius: "18px",
     textDecoration: "none",
     fontWeight: "bold",

@@ -12,6 +12,14 @@ const bookingSchema = new mongoose.Schema(
       ref: "YogaSession",
       required: true,
     },
+    selectedDate: {
+      type: String,
+      required: true,
+    },
+    selectedTime: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["booked", "cancelled"],
