@@ -5,6 +5,7 @@ const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
 const yogaSessionRoutes = require('./routes/yogaSessionRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
 dotenv.config();
 
@@ -17,9 +18,10 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/yoga-sessions', yogaSessionRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 // Home Route
 app.get('/', (req, res) => {
