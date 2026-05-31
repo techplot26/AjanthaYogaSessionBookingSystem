@@ -1,98 +1,205 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
-import axiosInstance from '../axiosConfig';
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "../axiosConfig";
 
-const Profile = () => {
-  const { user } = useAuth(); // Access user token from context
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    university: '',
-    address: '',
+function Profile() {
+  const navigate = useNavigate();
+
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    address: "",
   });
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch profile data from the backend
-    const fetchProfile = async () => {
-      setLoading(true);
-      try {
-        const response = await axiosInstance.get('/api/auth/profile', {
-          headers: { Authorization: `Bearer ${user.token}` },
-        });
-        setFormData({
-          name: response.data.name,
-          email: response.data.email,
-          university: response.data.university || '',
-          address: response.data.address || '',
-        });
-      } catch (error) {
-        alert('Failed to fetch profile. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
+    const storedUser = JSON.parse(localStorage.getItem("user"));
 
-    if (user) fetchProfile();
-  }, [user]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      await axiosInstance.put('/api/auth/profile', formData, {
-        headers: { Authorization: `Bearer ${user.token}` },
+    if (storedUser) {
+      setProfile({
+        name: storedUser.name || "",
+        email: storedUser.email || "",
+        address: storedUser.address || "",
       });
-      alert('Profile updated successfully!');
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    setProfile({
+      ...profile,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const updateProfile = async (e) => {
+    e.preventDefault();
+
+    try {
+      alert("Profile updated successfully");
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...JSON.parse(localStorage.getItem("user")),
+          ...profile,
+        })
+      );
     } catch (error) {
-      alert('Failed to update profile. Please try again.');
-    } finally {
-      setLoading(false);
+      alert("Profile update failed");
     }
   };
 
-  if (loading) {
-    return <div className="text-center mt-20">Loading...</div>;
-  }
-
   return (
-    <div className="max-w-md mx-auto mt-20">
-      <form onSubmit={handleSubmit} className="bg-white p-6 shadow-md rounded">
-        <h1 className="text-2xl font-bold mb-4 text-center">Your Profile</h1>
-        <input
-          type="text"
-          placeholder="Name"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
-        />
-        <input
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="University"
-          value={formData.university}
-          onChange={(e) => setFormData({ ...formData, university: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="Address"
-          value={formData.address}
-          onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-          className="w-full mb-4 p-2 border rounded"
-        />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded">
-          {loading ? 'Updating...' : 'Update Profile'}
-        </button>
-      </form>
+    <div style={styles.page}>
+      <button style={styles.backButton} onClick={() => navigate(-1)}>
+        ← Back
+      </button>
+
+      <div style={styles.container}>
+        <div style={styles.header}>
+          <div style={styles.avatar}>
+            {profile.name ? profile.name.charAt(0).toUpperCase() : "U"}
+          </div>
+
+          <div>
+            <h1 style={styles.title}>My Profile</h1>
+            <p style={styles.subtitle}>Manage your account details</p>
+          </div>
+        </div>
+
+        <form onSubmit={updateProfile} style={styles.formCard}>
+          <label style={styles.label}>Full Name</label>
+          <input
+            style={styles.input}
+            name="name"
+            value={profile.name}
+            onChange={handleChange}
+            placeholder="Full Name"
+          />
+
+          <label style={styles.label}>Email</label>
+          <input
+            style={styles.input}
+            name="email"
+            value={profile.email}
+            onChange={handleChange}
+            placeholder="Email"
+            type="email"
+          />
+
+          <label style={styles.label}>Address</label>
+          <textarea
+            style={styles.textarea}
+            name="address"
+            value={profile.address}
+            onChange={handleChange}
+            placeholder="Address"
+          />
+
+          <button type="submit" style={styles.updateButton}>
+            Update Profile
+          </button>
+        </form>
+      </div>
     </div>
   );
+}
+
+const styles = {
+  page: {
+    minHeight: "100vh",
+    background: "linear-gradient(160deg, #d88ad7, #9b5de5, #5b36c5)",
+    padding: "30px",
+  },
+
+  backButton: {
+    background: "rgba(255,255,255,0.9)",
+    border: "none",
+    borderRadius: "18px",
+    padding: "10px 18px",
+    color: "#351c75",
+    fontWeight: "bold",
+    cursor: "pointer",
+    marginBottom: "25px",
+  },
+
+  container: {
+    maxWidth: "800px",
+    margin: "0 auto",
+    background: "rgba(255,255,255,0.95)",
+    borderRadius: "28px",
+    padding: "35px",
+    boxShadow: "0 20px 45px rgba(0,0,0,0.22)",
+  },
+
+  header: {
+    display: "flex",
+    alignItems: "center",
+    gap: "22px",
+    marginBottom: "30px",
+  },
+
+  avatar: {
+    width: "90px",
+    height: "90px",
+    borderRadius: "50%",
+    background: "#7ed957",
+    color: "#351c75",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    fontSize: "34px",
+    fontWeight: "bold",
+  },
+
+  title: {
+    color: "#351c75",
+    fontSize: "34px",
+    margin: 0,
+  },
+
+  subtitle: {
+    color: "#6b7280",
+    marginTop: "8px",
+  },
+
+  formCard: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "10px",
+  },
+
+  label: {
+    color: "#351c75",
+    fontWeight: "bold",
+    marginTop: "10px",
+  },
+
+  input: {
+    padding: "14px",
+    borderRadius: "16px",
+    border: "1px solid #ddd",
+    fontSize: "15px",
+  },
+
+  textarea: {
+    padding: "14px",
+    borderRadius: "16px",
+    border: "1px solid #ddd",
+    fontSize: "15px",
+    minHeight: "90px",
+  },
+
+  updateButton: {
+    marginTop: "20px",
+    background: "#7ed957",
+    color: "#1f2937",
+    border: "none",
+    borderRadius: "22px",
+    padding: "14px",
+    fontWeight: "bold",
+    fontSize: "16px",
+    cursor: "pointer",
+  },
 };
 
 export default Profile;
