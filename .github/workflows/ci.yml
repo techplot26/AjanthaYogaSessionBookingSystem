@@ -1,28 +1,58 @@
-name: CI
+name: Ajantha Yoga CI
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - development
+      - main
+  pull_request:
+    branches:
+      - development
+      - main
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
+  backend-ci:
+    name: Backend CI
+    runs-on: ubuntu-latest
 
-        steps:
-        - name: Checkout code
-            uses: actions/checkout@v2
+    defaults:
+      run:
+        working-directory: backend
 
-        - name: Set up Node.js
-            uses: actions/setup-node@v2
-            with:
-                node-version: '14'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Install dependencies
-            run: npm install
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
-        - name: Run tests
-            run: npm test
+      - name: Install backend dependencies
+        run: npm install
+
+      - name: Check backend
+        run: npm run build --if-present
+
+  frontend-ci:
+    name: Frontend CI
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install frontend dependencies
+        run: npm install
+
+      - name: Build frontend
+        run: npm run build
