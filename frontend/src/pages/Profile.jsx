@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "../axiosConfig";
 
 function Profile() {
   const navigate = useNavigate();
@@ -30,22 +29,18 @@ function Profile() {
     });
   };
 
-  const updateProfile = async (e) => {
+  const updateProfile = (e) => {
     e.preventDefault();
 
-    try {
-      alert("Profile updated successfully");
+    localStorage.setItem(
+      "user",
+      JSON.stringify({
+        ...JSON.parse(localStorage.getItem("user")),
+        ...profile,
+      })
+    );
 
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...JSON.parse(localStorage.getItem("user")),
-          ...profile,
-        })
-      );
-    } catch (error) {
-      alert("Profile update failed");
-    }
+    alert("Profile updated successfully");
   };
 
   return (
@@ -80,10 +75,10 @@ function Profile() {
           <input
             style={styles.input}
             name="email"
+            type="email"
             value={profile.email}
             onChange={handleChange}
             placeholder="Email"
-            type="email"
           />
 
           <label style={styles.label}>Address</label>
