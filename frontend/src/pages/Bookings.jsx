@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "../axiosConfig";
 
+import hathaImg from "../assets/hatha.png";
+import session1Img from "../assets/session1.png";
+import session2Img from "../assets/session2.png";
+import session3Img from "../assets/session3.png";
+
 function Bookings() {
   const [bookings, setBookings] = useState([]);
 
@@ -19,11 +24,15 @@ function Bookings() {
     loadBookings();
   };
 
-  const getImageEmoji = (image) => {
-    if (image === "session1.jpg") return "🧘‍♀️";
-    if (image === "session2.jpg") return "🌿";
-    if (image === "session3.jpg") return "🔥";
-    return "🧘";
+  const getSessionImage = (session) => {
+    if (!session) return hathaImg;
+
+    if (session.title === "Morning Hatha Yoga") return hathaImg;
+    if (session.image === "session1.jpg") return session1Img;
+    if (session.image === "session2.jpg") return session2Img;
+    if (session.image === "session3.jpg") return session3Img;
+
+    return hathaImg;
   };
 
   return (
@@ -43,7 +52,11 @@ function Bookings() {
         {bookings.map((booking) => (
           <div key={booking._id} style={styles.card}>
             <div style={styles.imageBox}>
-              {getImageEmoji(booking.session?.image)}
+              <img
+                src={getSessionImage(booking.session)}
+                alt={booking.session?.title || "Yoga session"}
+                style={styles.imageTag}
+              />
             </div>
 
             <div style={styles.info}>
@@ -87,6 +100,7 @@ const styles = {
     justifyContent: "center",
     padding: "20px",
   },
+
   phone: {
     width: "390px",
     minHeight: "760px",
@@ -95,33 +109,39 @@ const styles = {
     padding: "22px",
     boxShadow: "0 20px 45px rgba(0,0,0,0.25)",
   },
+
   title: {
     color: "#351c75",
     fontSize: "30px",
   },
+
   tabs: {
     display: "flex",
     gap: "15px",
     marginBottom: "20px",
   },
+
   activeTab: {
     background: "#7ed957",
     padding: "8px 18px",
     borderRadius: "18px",
     fontWeight: "bold",
   },
+
   tab: {
     background: "white",
     padding: "8px 18px",
     borderRadius: "18px",
     color: "#6b7280",
   },
+
   emptyText: {
     color: "#6b7280",
     background: "white",
     padding: "15px",
     borderRadius: "18px",
   },
+
   card: {
     background: "white",
     borderRadius: "24px",
@@ -131,29 +151,37 @@ const styles = {
     marginBottom: "15px",
     boxShadow: "0 8px 20px rgba(91,54,197,0.12)",
   },
+
   imageBox: {
     width: "82px",
     minWidth: "82px",
     height: "82px",
     borderRadius: "20px",
+    overflow: "hidden",
     background: "#f1e7ff",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "40px",
   },
+
+  imageTag: {
+    width: "100%",
+    height: "100%",
+    objectFit: "cover",
+  },
+
   info: {
     flex: 1,
   },
+
   sessionTitle: {
     color: "#351c75",
     margin: "0 0 5px",
   },
+
   text: {
     margin: "0 0 5px",
     color: "#6b7280",
     fontSize: "14px",
   },
+
   status: {
     display: "inline-block",
     background: "#e8f8df",
@@ -165,6 +193,7 @@ const styles = {
     marginRight: "8px",
     textTransform: "capitalize",
   },
+
   cancelButton: {
     border: "none",
     background: "#ffdddd",

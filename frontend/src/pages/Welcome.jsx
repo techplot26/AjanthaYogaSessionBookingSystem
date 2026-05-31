@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-
+import welcomeYoga from "../assets/welcome-yoga.png";
 function Welcome() {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <div style={styles.imageCircle}>🧘‍♀️</div>
+        <img src={welcomeYoga} alt="Yoga welcome" style={styles.welcomeImage} />
 
         <h1 style={styles.title}>Welcome to Ajantha Yoga</h1>
 
@@ -33,6 +33,14 @@ const styles = {
     justifyContent: "center",
     padding: "20px",
   },
+  welcomeImage: {
+  width: "220px",
+  height: "220px",
+  objectFit: "cover",
+  borderRadius: "50%",
+  margin: "45px auto 35px",
+  display: "block",
+},
   card: {
     width: "360px",
     minHeight: "620px",
