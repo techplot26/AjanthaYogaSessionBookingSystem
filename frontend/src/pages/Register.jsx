@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "../axiosConfig";
+import welcomeYoga from "../assets/welcome-yoga.png";
 
 function Register() {
   const navigate = useNavigate();
@@ -41,30 +42,75 @@ function Register() {
 
   return (
     <div style={styles.page}>
-      <div style={styles.card}>
-        <h1 style={styles.title}>Create Account</h1>
-        <p style={styles.subtitle}>Sign up to get started</p>
+      <div style={styles.container}>
+        <div style={styles.leftPanel}>
+          <h1 style={styles.heroTitle}>Create Account</h1>
+          <p style={styles.heroText}>
+            Sign up to get started with Ajantha Yoga and begin your wellness journey.
+          </p>
+          <img src={welcomeYoga} alt="Yoga register" style={styles.heroImage} />
+        </div>
 
-        <form onSubmit={registerUser} style={styles.form}>
-          <input style={styles.input} name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required />
+        <div style={styles.formPanel}>
+          <h2 style={styles.title}>Create Account</h2>
+          <p style={styles.subtitle}>Sign up to get started</p>
 
-          <input style={styles.input} name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required />
+          <form onSubmit={registerUser} style={styles.form}>
+            <label style={styles.label}>Full Name</label>
+            <input
+              style={styles.input}
+              name="name"
+              placeholder="Enter your full name"
+              value={form.name}
+              onChange={handleChange}
+              required
+            />
 
-          <input style={styles.input} name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required />
+            <label style={styles.label}>Email</label>
+            <input
+              style={styles.input}
+              name="email"
+              type="email"
+              placeholder="Enter your email"
+              value={form.email}
+              onChange={handleChange}
+              required
+            />
 
-          <input style={styles.input} name="confirmPassword" type="password" placeholder="Confirm Password" value={form.confirmPassword} onChange={handleChange} required />
+            <label style={styles.label}>Password</label>
+            <input
+              style={styles.input}
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              value={form.password}
+              onChange={handleChange}
+              required
+            />
 
-          <button type="submit" style={styles.button}>
-            Create Account
-          </button>
-        </form>
+            <label style={styles.label}>Confirm Password</label>
+            <input
+              style={styles.input}
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirm your password"
+              value={form.confirmPassword}
+              onChange={handleChange}
+              required
+            />
 
-        <p style={styles.bottomText}>
-          Already have an account?{" "}
-          <Link to="/login" style={styles.link}>
-            Login
-          </Link>
-        </p>
+            <button type="submit" style={styles.button}>
+              Create Account
+            </button>
+          </form>
+
+          <p style={styles.bottomText}>
+            Already have an account?{" "}
+            <Link to="/login" style={styles.link}>
+              Login
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -73,45 +119,92 @@ function Register() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(160deg, #d88ad7, #9b5de5, #5b36c5)",
+    background: "linear-gradient(135deg, #d88ad7, #9b5de5, #5b36c5)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "20px",
+    padding: "50px",
+    boxSizing: "border-box",
   },
-  card: {
-    width: "360px",
-    background: "rgba(255,255,255,0.95)",
-    borderRadius: "30px",
-    padding: "35px 28px",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
-    textAlign: "center",
+
+  container: {
+    width: "100%",
+    maxWidth: "1080px",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    background: "rgba(255,255,255,0.18)",
+    borderRadius: "34px",
+    overflow: "hidden",
+    boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
   },
-  title: {
-    fontSize: "32px",
-    color: "#5b36c5",
-    marginBottom: "8px",
+
+  leftPanel: {
+    padding: "50px",
+    color: "white",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
-  subtitle: {
-    color: "#6b7280",
+
+  heroTitle: {
+    fontSize: "44px",
+    margin: "0 0 16px",
+  },
+
+  heroText: {
+    fontSize: "17px",
+    lineHeight: "1.6",
     marginBottom: "30px",
   },
+
+  heroImage: {
+    width: "100%",
+    maxWidth: "360px",
+    height: "300px",
+    objectFit: "cover",
+    borderRadius: "28px",
+    boxShadow: "0 16px 36px rgba(0,0,0,0.25)",
+  },
+
+  formPanel: {
+    background: "rgba(255,255,255,0.96)",
+    padding: "45px 55px",
+  },
+
+  title: {
+    fontSize: "34px",
+    color: "#351c75",
+    margin: "0 0 8px",
+  },
+
+  subtitle: {
+    color: "#6b7280",
+    marginBottom: "25px",
+  },
+
   form: {
     display: "flex",
     flexDirection: "column",
-    gap: "14px",
+    gap: "8px",
   },
+
+  label: {
+    color: "#351c75",
+    fontWeight: "bold",
+  },
+
   input: {
-    padding: "14px",
-    borderRadius: "18px",
+    padding: "13px",
+    borderRadius: "16px",
     border: "1px solid #ddd",
     fontSize: "15px",
-    outline: "none",
+    marginBottom: "6px",
   },
+
   button: {
-    marginTop: "8px",
-    padding: "14px",
-    borderRadius: "22px",
+    marginTop: "12px",
+    padding: "15px",
+    borderRadius: "24px",
     border: "none",
     background: "#7ed957",
     color: "#1f2937",
@@ -119,10 +212,12 @@ const styles = {
     fontSize: "16px",
     cursor: "pointer",
   },
+
   bottomText: {
-    marginTop: "25px",
+    marginTop: "22px",
     color: "#6b7280",
   },
+
   link: {
     color: "#5b36c5",
     fontWeight: "bold",

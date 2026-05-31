@@ -1,24 +1,36 @@
 import { Link } from "react-router-dom";
 import welcomeYoga from "../assets/welcome-yoga.png";
+
 function Welcome() {
   return (
     <div style={styles.page}>
-      <div style={styles.card}>
-        <img src={welcomeYoga} alt="Yoga welcome" style={styles.welcomeImage} />
+      <div style={styles.container}>
+        <div style={styles.left}>
+          <p style={styles.badge}>Ajantha Yoga</p>
 
-        <h1 style={styles.title}>Welcome to Ajantha Yoga</h1>
+          <h1 style={styles.title}>
+            Begin your wellness journey with calm and confidence
+          </h1>
 
-        <p style={styles.subtitle}>
-          Find balance, peace, and strength through guided yoga sessions.
-        </p>
+          <p style={styles.subtitle}>
+            Discover yoga sessions, choose your preferred date and time, and
+            manage your bookings in one simple platform.
+          </p>
 
-        <Link to="/login" style={styles.button}>
-          Get Started
-        </Link>
+          <div style={styles.actions}>
+            <Link to="/login" style={styles.primaryButton}>
+              Get Started
+            </Link>
 
-        <p style={styles.bottomText}>
-          New here? <Link to="/register" style={styles.link}>Create Account</Link>
-        </p>
+            <Link to="/register" style={styles.secondaryButton}>
+              Create Account
+            </Link>
+          </div>
+        </div>
+
+        <div style={styles.right}>
+          <img src={welcomeYoga} alt="Yoga welcome" style={styles.image} />
+        </div>
       </div>
     </div>
   );
@@ -27,65 +39,91 @@ function Welcome() {
 const styles = {
   page: {
     minHeight: "100vh",
-    background: "linear-gradient(160deg, #d88ad7, #9b5de5, #5b36c5)",
+    background: "linear-gradient(135deg, #d88ad7, #9b5de5, #5b36c5)",
+    padding: "60px",
+    boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    padding: "20px",
   },
-  welcomeImage: {
-  width: "220px",
-  height: "220px",
-  objectFit: "cover",
-  borderRadius: "50%",
-  margin: "45px auto 35px",
-  display: "block",
-},
-  card: {
-    width: "360px",
-    minHeight: "620px",
-    background: "rgba(255,255,255,0.18)",
-    borderRadius: "30px",
-    padding: "30px",
-    textAlign: "center",
+
+  container: {
+    width: "100%",
+    maxWidth: "1200px",
+    display: "grid",
+    gridTemplateColumns: "1.1fr 0.9fr",
+    alignItems: "center",
+    gap: "50px",
+    background: "rgba(255,255,255,0.16)",
+    borderRadius: "36px",
+    padding: "55px",
+    boxShadow: "0 25px 60px rgba(0,0,0,0.25)",
+  },
+
+  left: {
     color: "white",
-    boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
   },
-  imageCircle: {
-    width: "190px",
-    height: "190px",
-    borderRadius: "50%",
-    background: "rgba(255,255,255,0.3)",
-    margin: "45px auto 35px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    fontSize: "90px",
+
+  badge: {
+    display: "inline-block",
+    background: "rgba(255,255,255,0.22)",
+    padding: "10px 18px",
+    borderRadius: "20px",
+    fontWeight: "bold",
+    marginBottom: "20px",
   },
+
   title: {
-    fontSize: "30px",
-    marginBottom: "15px",
+    fontSize: "52px",
+    lineHeight: "1.1",
+    margin: "0 0 22px",
+    maxWidth: "720px",
   },
+
   subtitle: {
-    fontSize: "16px",
-    lineHeight: "1.6",
-    marginBottom: "35px",
+    fontSize: "18px",
+    lineHeight: "1.7",
+    maxWidth: "650px",
+    marginBottom: "34px",
   },
-  button: {
-    display: "block",
+
+  actions: {
+    display: "flex",
+    gap: "18px",
+    flexWrap: "wrap",
+  },
+
+  primaryButton: {
     background: "#7ed957",
     color: "#1f2937",
-    padding: "14px",
-    borderRadius: "25px",
+    padding: "15px 30px",
+    borderRadius: "26px",
     textDecoration: "none",
     fontWeight: "bold",
   },
-  bottomText: {
-    marginTop: "25px",
-  },
-  link: {
-    color: "white",
+
+  secondaryButton: {
+    background: "white",
+    color: "#5b36c5",
+    padding: "15px 30px",
+    borderRadius: "26px",
+    textDecoration: "none",
     fontWeight: "bold",
+  },
+
+  right: {
+    display: "flex",
+    justifyContent: "center",
+  },
+
+  image: {
+    width: "100%",
+    maxWidth: "430px",
+    height: "430px",
+    objectFit: "cover",
+    borderRadius: "40px",
+    boxShadow: "0 20px 45px rgba(0,0,0,0.25)",
+    background: "white",
   },
 };
 
