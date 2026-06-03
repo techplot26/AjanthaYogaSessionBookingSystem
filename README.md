@@ -203,7 +203,6 @@ GET /api/bookings
 
 Users can register a new account using the Registration page.
 
-No preconfigured user account is required.
 
 ### Admin Access
 
