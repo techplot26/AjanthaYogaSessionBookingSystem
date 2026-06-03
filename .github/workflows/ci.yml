@@ -1,14 +1,14 @@
-name: Ajantha Yoga CI
+name: Ajantha Yoga CI/CD
 
 on:
   push:
     branches:
-      - development
       - main
+      - development
   pull_request:
     branches:
-      - development
       - main
+      - development
 
 jobs:
   backend-ci:
@@ -56,3 +56,33 @@ jobs:
 
       - name: Build frontend
         run: CI=false npm run build
+
+  deploy-to-ec2:
+    name: Deploy to EC2
+    runs-on: self-hosted
+    needs:
+      - backend-ci
+      - frontend-ci
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy latest code to EC2
+        run: |
+          cd ~/AjanthaYogaSessionBookingSystem
+
+          git checkout main
+          git pull origin main
+
+          cd backend
+          npm install
+          pm2 restart ajantha-backend || pm2 start server.js --name ajantha-backend
+
+          cd ../frontend
+          npm install
+          CI=false npm run build
+
+          sudo rm -rf /var/www/html/*
+          sudo cp -r build/* /var/www/html/
+          sudo systemctl restart nginx
+
+          pm2 save
