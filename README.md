@@ -17,7 +17,7 @@ http://3.26.242.17
 **Backend API:**
 
 http://3.26.242.17:5001/
-Demo Credentials
+**Demo Credentials
 
 Admin Account
 Email: admin@ajanthayoga.com
