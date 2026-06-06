@@ -17,8 +17,17 @@ http://3.26.242.17
 **Backend API:**
 
 http://3.26.242.17:5001/
+Demo Credentials
 
-> Note: EC2 instance may be stopped in status due to avoiding personal AWS charges may incur as .Also the Public ip may subject to change as per AWS instance login.
+Admin Account
+Email: admin@ajanthayoga.com
+Password: Admin@123
+
+User Account
+Email: testuser@ajanthayoga.com
+Password: Test@123
+
+> Note: EC2 instance may be stopped in status due to avoiding personal AWS charges may incur as .Also the Public ip may subject to change as per personal AWS instance login.
 
 
 ---
