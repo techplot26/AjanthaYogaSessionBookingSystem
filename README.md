@@ -17,6 +17,8 @@ http://3.26.242.17
 http://3.26.242.17:5001/
 
 > Note: EC2 instance may be stopped in status due to avoiding personal AWS charges may incur as .
+> Software project management with JIRA Board URL
+https://connect-team-d6w8rnp7.atlassian.net/jira/software/projects/SCRUM/boards/1
 
 ---
 
