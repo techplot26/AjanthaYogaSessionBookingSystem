@@ -5,7 +5,9 @@
 Ajantha Yoga Session Booking System is a full-stack web application. This system allows users to browse yoga sessions, register, login, book sessions, cancel bookings, and manage their profiles. Administrators can manage yoga sessions and monitor bookings.
 
 ---
-
+## Project Managment with JIRA.
+> Software project management with JIRA Board URL
+https://connect-team-d6w8rnp7.atlassian.net/jira/software/projects/SCRUM/boards/1
 ## Live Deployment
 
 **Public URL:**
@@ -16,9 +18,8 @@ http://3.26.242.17
 
 http://3.26.242.17:5001/
 
-> Note: EC2 instance may be stopped in status due to avoiding personal AWS charges may incur as .
-> Software project management with JIRA Board URL
-https://connect-team-d6w8rnp7.atlassian.net/jira/software/projects/SCRUM/boards/1
+> Note: EC2 instance may be stopped in status due to avoiding personal AWS charges may incur as .Also the Public ip may subject to change as per AWS instance login.
+
 
 ---
 
