@@ -77,7 +77,7 @@ https://github.com/techplot26/AjanthaYogaSessionBookingSystem
 
 ### Database
 
-* MongoDB Atlas
+* MongoDB
 
 ### DevOps
 
